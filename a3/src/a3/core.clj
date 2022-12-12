@@ -3,7 +3,7 @@
 
 (defn display-customer-table []
   (println "Displaying customer table...")
-  (with-open [file (io/reader "user.txt")]
+  (with-open [file (io/reader "cust.txt")]
     (doseq [line (line-seq file)]
       (println line))))
 
@@ -38,13 +38,11 @@
 
   (let [option (read-line)]
     (cond
-      (= option "1") (display-customer-table)
-      (= option "2") (display-product-table)
-      (= option "3") (display-sales-table)
+      (= option "1") ((display-customer-table)(menu))
+      (= option "2") ((display-product-table)(menu))
+      (= option "3") ((display-sales-table)(menu))
       (= option "4") (total-sales-for-customer (read-line))
       (= option "5") (total-count-for-product (read-line))
       (= option "6") (println "Exiting..."))))
 
 (menu)
-
-
