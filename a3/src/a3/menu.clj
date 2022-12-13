@@ -23,12 +23,14 @@
       (= option "1") ((db/display-customer-table) (main-menu))
       (= option "2") ((db/display-product-table) (main-menu))
       (= option "3") ((db/display-sales-table) (main-menu))
-      (= option "4") ((print "Enter customer name: ")
+      (= option "4") ((println "Please note that the names are case-sensitive")
+                      (print "Enter customer name: ") 
                       (flush)
                       (let [input (clojure.string/join (read-line))]
-                        (println (str "Total sales for customer " input ": " (db/total-sales sales products-data (get customer-id input)) "$")))
+                        (println (str "Total sales for customer " input ": $" (db/total-sales sales products-data (get customer-id input)))))
                       (main-menu))
-      (= option "5") ((print "Enter product name: ")
+      (= option "5") ((println "Please note that the names are case-sensitive")
+                      (print "Enter product name: ") 
                       (flush)
                       (let [input (clojure.string/join (read-line))]
                         (println (str "\nTotal count for product " input ": " (db/total-count sales (get product-id input)))))

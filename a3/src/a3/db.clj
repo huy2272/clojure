@@ -2,6 +2,23 @@
   (:require [clojure.java.io :as io])
   (:require [clojure.string]))
 
+;; Option 1
+(defn display-customer-table []
+  (println "Displaying customer table...")
+  (with-open [file (io/reader "cust.txt")]
+    (doseq [line (line-seq file)]
+      (println line))))
+
+;; Option 2
+(defn display-product-table []
+  (println "Displaying product table...")
+  (with-open [file (io/reader "prod.txt")]
+    (doseq [line (line-seq file)]
+      (println line))))
+
+;; Functions to map prod-id and cust-id to their respective names
+
+;; Map cust-id to name
 (defn parse-customers [fname]
   (with-open [rdr (io/reader fname)]
     (->> (line-seq rdr)
@@ -9,6 +26,7 @@
          (map (fn [[cust-id name _ _]] [cust-id name]))
          (into {}))))
 
+;; Map prod-id to description
 (defn parse-products [fname]
   (with-open [rdr (io/reader fname)]
     (->> (line-seq rdr)
@@ -16,6 +34,8 @@
          (map (fn [[prod-id item-name _]] [prod-id item-name]))
          (into {}))))
 
+;; Replace all cust-id with customer-name, replace all prod-id with prod-name
+;; Returns a string
 (defn replace-both-ids [sales-fname customers products]
   (with-open [rdr (io/reader sales-fname)]
     (->> (line-seq rdr)
@@ -29,24 +49,12 @@
 (def products (parse-products "prod.txt"))
 (def replaced (replace-both-ids "sales.txt" customers products))
 
-(defn display-customer-table []
-  (println "Displaying customer table...")
-  (with-open [file (io/reader "cust.txt")]
-    (doseq [line (line-seq file)]
-
-      (println line))))
-
-(defn display-product-table []
-  (println "Displaying product table...")
-  (with-open [file (io/reader "prod.txt")]
-    (doseq [line (line-seq file)]
-      (println line))))
-
 (defn display-sales-table []
   (println "Displaying sales table...")
   (println replaced))
 
 ;;Functions to calculate total sales 
+;; Returns the customer-id for the given string
 (defn name-to-id [fname]
   (with-open [rdr (io/reader fname)]
     (->> (line-seq rdr)
@@ -64,7 +72,8 @@
                      (* (Double/parseDouble count) (Double/parseDouble (nth (first (filter #(= (first %) prod-id) products)) 2))))
                    total-value))))
 
-;;Functions for total count for products
+;; Functions for total count for products
+;; Returns the product-id for the given string
 (defn prod-to-id [fname]
   (with-open [rdr (io/reader fname)]
     (->> (line-seq rdr)
